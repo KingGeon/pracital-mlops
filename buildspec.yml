@@ -1,23 +1,13 @@
-name: AWS Amazon Linux 2 3.7.9
-on: [push]
-jobs:
+version: 0.2
+
+phase:
+  install:
+    commands:
+      - pip install -- upgrade pip
+      - pip install -r requirements.txt
   build:
-    runs-on: amazonlinux
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7.9
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7.9
-    - name: Install dependencies
-      run: |
-        make install-amazon-linux
-    - name: Lint
-      run: |
-        make lint
-    - name: Test
-      run: |
-        make test
-    - name: Format
-      run: |
-        make format
+    commands:
+      - pylint --disable=R,C hello.py
+  post_build:
+    commands:
+      - python -m pytest -vv --conv=hello test_hell0.py
